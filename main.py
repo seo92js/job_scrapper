@@ -1,12 +1,14 @@
 from extractors.indeed import extract_indeed_jobs
 from extractors.wwr import extract_wwr_jobs
+from extractors.saramin import extract_saramin_jobs
 
 keyword = input("What do you want to search for?")
 
 indeed = extract_indeed_jobs(keyword)
 wwr = extract_wwr_jobs(keyword)
+saramin = extract_saramin_jobs(keyword)
 
-jobs = indeed + wwr
+jobs = wwr + saramin
 
 file = open(f"{keyword}.csv", "w")
 file.write("Position, Company, Location, URL\n")

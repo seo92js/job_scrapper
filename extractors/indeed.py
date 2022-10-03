@@ -7,14 +7,10 @@ def get_page_count(keyword):
     options = Options()
     #options.add_argument("headless")
     
-    # replit에서 동작시키기 위한 option
-    # options.add_argument("--no-sandbox")
-    # options.add_argument("--disable-dev-shm-usage")
-    
     base_url = "https://kr.indeed.com/jobs?q="
     url = f"{base_url}{keyword}"
     
-    browser = webdriver.Chrome(executable_path='/Users/seojeongseop/Desktop/Project/job_scrapper/chromedriver', options= options)
+    browser = webdriver.Chrome(executable_path='./chromedriver', options= options)
     browser.get(url)
     
     soup = BeautifulSoup(browser.page_source, "html.parser")
@@ -26,8 +22,11 @@ def get_page_count(keyword):
     pages = pagination.find_all("li", recursive=False)
     count = len(pages)
     
-    if count >= 5:
-        return 5
+    last_pagination = pages[count-1]
+    
+    # 10페이지 까지 탐색하도록 수정해야함
+    if last_pagination.find("a", ['aria-label'] == "다음"): 
+        return count
     else:
         return count
     
@@ -39,14 +38,10 @@ def extract_indeed_jobs(keyword):
         options = Options()
         #options.add_argument("headless")
         
-        # replit에서 동작시키기 위한 option
-        # options.add_argument("--no-sandbox")
-        # options.add_argument("--disable-dev-shm-usage")
-        
         base_url = "https://kr.indeed.com/jobs"
         url = f"{base_url}?q={keyword}&start={page*10}"
 
-        browser = webdriver.Chrome(executable_path='/Users/seojeongseop/Desktop/Project/job_scrapper/chromedriver', options=options)
+        browser = webdriver.Chrome(executable_path='./chromedriver', options=options)
         print("Requesting", url)
         browser.get(url)
         
