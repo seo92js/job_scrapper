@@ -1,4 +1,5 @@
 .DS_Store
 extractors/__pycache__/
+__pycache__/
 .pyc
 .pyo
