@@ -1,21 +1,21 @@
+from flask import Flask, render_template, request
 from extractors.indeed import extract_indeed_jobs
 from extractors.wwr import extract_wwr_jobs
 from extractors.saramin import extract_saramin_jobs
 
-keyword = input("What do you want to search for?")
+app = Flask("JobScrapper")
 
-indeed = extract_indeed_jobs(keyword)
-wwr = extract_wwr_jobs(keyword)
-saramin = extract_saramin_jobs(keyword)
+@app.route("/")
+def home():
+    return render_template("index.html", name="nico")
 
-jobs = wwr + saramin
-
-file = open(f"{keyword}.csv", "w")
-file.write("Position, Company, Location, URL\n")
-
-for job in jobs:
-    file.write(f"{job['position']}, {job['company']}, {job['location']}, {job['link']}\n")
+@app.route("/search")
+def hello():
+    keyword = request.args.get("keyword")
+    indeed = extract_indeed_jobs(keyword)
+    wwr = extract_wwr_jobs(keyword)
+    saramin = extract_saramin_jobs(keyword)
+    jobs =  indeed + wwr + saramin
+    return render_template("search.html", keyword = keyword, jobs = jobs)
     
-file.close()
-
-
+app.run("127.0.0.1")
