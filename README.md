@@ -1,3 +1,3 @@
 # job_scrapper
 
-구직사이트 job을 추출하여 csv로 출력
+여러 구직사이트 job을 scrap하는 웹 애플리케이션
